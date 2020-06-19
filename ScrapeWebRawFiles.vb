@@ -1,6 +1,16 @@
+'This only works on data without return gaps!
+'To rectify this, simpley replace in line 55:
+    'Data = Worksheets("MyTmpWS").Range("A1", Worksheets("MyTmpWS").Range("A1").End(xlDown)).Value
+'With:
+    'Data = Worksheets("MyTmpWS").Range("A1:A10000").Value
+'This will drasticlly slow down the Sub, however, you can adjust the lenght ("A1:A10000") to a smaller or large range ("A1:A100")
+
+'Test/Example Sub
 Sub TestDataFromWebToText()
     Call DataFromWebToText("https://vincentarelbundock.github.io/Rdatasets/csv/carData/Arrests.csv", "My File", ".csv")
 End Sub
+
+
 
 Sub DataFromWebToText(ByVal URL As String, fileName As String, fileExt As String)
     On Error Resume Next
@@ -51,6 +61,8 @@ Application.DisplayAlerts = True
 Application.ScreenUpdating = True
 End Function
 
+
+
 Function arrayToText(ary As Variant) As String
     On Error Resume Next
     arrayToText = ""
@@ -58,6 +70,8 @@ Function arrayToText(ary As Variant) As String
         arrayToText = arrayToText & ary(i, 1) & vbNewLine
     Next i
 End Function
+
+
 
 Sub writeToTextFile(ByVal fileName As String, fileExt As String, text As String)
     On Error Resume Next
