@@ -22,43 +22,43 @@ Sub DataFromWebToText(ByVal URL As String, fileName As String, fileExt As String
 End Sub
 
 Function getDataFromWeb(URL) As Variant
-On Error Resume Next
-Application.DisplayAlerts = False
-Application.ScreenUpdating = False
-Application.Worksheets.add().Name = "MyTmpWS"
-    With Sheets("MyTmpWS").QueryTables.add(Connection:= _
-        "URL;" & URL, _
-        Destination:=Range("$A$1"))
-        .Name = "Test"
-        .FieldNames = True
-        .RowNumbers = False
-        .FillAdjacentFormulas = False
-        .PreserveFormatting = True
-        .RefreshOnFileOpen = False
-        .BackgroundQuery = True
-        .RefreshStyle = xlInsertDeleteCells
-        .SavePassword = False
-        .SaveData = True
-        .AdjustColumnWidth = True
-        .RefreshPeriod = 0
-        .WebSelectionType = xlEntirePage
-        .WebFormatting = xlWebFormattingNone
-        .WebPreFormattedTextToColumns = True
-        .WebConsecutiveDelimitersAsOne = True
-        .WebSingleBlockTextImport = False
-        .WebDisableDateRecognition = False
-        .WebDisableRedirections = False
-        .Refresh BackgroundQuery:=False
-    End With
+    On Error Resume Next
+    Application.DisplayAlerts = False
+    Application.ScreenUpdating = False
+    Application.Worksheets.add().Name = "MyTmpWS"
+        With Sheets("MyTmpWS").QueryTables.add(Connection:= _
+            "URL;" & URL, _
+            Destination:=Range("$A$1"))
+            .Name = "Test"
+            .FieldNames = True
+            .RowNumbers = False
+            .FillAdjacentFormulas = False
+            .PreserveFormatting = True
+            .RefreshOnFileOpen = False
+            .BackgroundQuery = True
+            .RefreshStyle = xlInsertDeleteCells
+            .SavePassword = False
+            .SaveData = True
+            .AdjustColumnWidth = True
+            .RefreshPeriod = 0
+            .WebSelectionType = xlEntirePage
+            .WebFormatting = xlWebFormattingNone
+            .WebPreFormattedTextToColumns = True
+            .WebConsecutiveDelimitersAsOne = True
+            .WebSingleBlockTextImport = False
+            .WebDisableDateRecognition = False
+            .WebDisableRedirections = False
+            .Refresh BackgroundQuery:=False
+        End With
 
-Dim Data As Variant
-Data = Worksheets("MyTmpWS").Range("A1", Worksheets("MyTmpWS").Range("A1").End(xlDown)).Value
-Worksheets("MyTmpWS").Delete
+    Dim Data As Variant
+    Data = Worksheets("MyTmpWS").Range("A1", Worksheets("MyTmpWS").Range("A1").End(xlDown)).Value
+    Worksheets("MyTmpWS").Delete
 
-Range("a1").SpecialCells (xlCellTypeLastCell)
-getDataFromWeb = Data
-Application.DisplayAlerts = True
-Application.ScreenUpdating = True
+    Range("a1").SpecialCells (xlCellTypeLastCell)
+    getDataFromWeb = Data
+    Application.DisplayAlerts = True
+    Application.ScreenUpdating = True
 End Function
 
 
