@@ -29,7 +29,7 @@ Function getDataFromWeb(URL) As Variant
         With Sheets("MyTmpWS").QueryTables.add(Connection:= _
             "URL;" & URL, _
             Destination:=Range("$A$1"))
-            .Name = "Test"
+            .Name = "Text"
             .FieldNames = True
             .RowNumbers = False
             .FillAdjacentFormulas = False
