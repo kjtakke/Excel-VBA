@@ -7,12 +7,12 @@
 
 'Test/Example Sub
 Sub TestDataFromWebToText()
-    Call DataFromWebToText("https://vincentarelbundock.github.io/Rdatasets/csv/carData/Arrests.csv", "My File", ".csv")
+    Call dataFromWebToText("https://vincentarelbundock.github.io/Rdatasets/csv/carData/Arrests.csv", "My File", ".csv")
 End Sub
 
 
 
-Sub DataFromWebToText(ByVal URL As String, fileName As String, fileExt As String)
+Sub dataFromWebToText(ByVal URL As String, fileName As String, fileExt As String)
     On Error Resume Next
     Dim str As String
     Dim ary As Variant
