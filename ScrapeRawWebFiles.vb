@@ -3,7 +3,7 @@
     'Data = Worksheets("MyTmpWS").Range("A1", Worksheets("MyTmpWS").Range("A1").End(xlDown)).Value
 'With:
     'Data = Worksheets("MyTmpWS").Range("A1:A10000").Value
-'This will drasticlly slow down the Sub, however, you can adjust the lenght ("A1:A10000") to a smaller or large range ("A1:A100")
+'This will drasticlly slow down the Sub, however, you can adjust the length ("A1:A10000") to a smaller or large range ("A1:A100")
 
 'Test/Example Sub
 Sub TestDataFromWebToText()
