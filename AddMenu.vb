@@ -1,25 +1,3 @@
-
-	
-
-
- 
-  
-Excel
-Add custom menu items to the Menu Bar
-
-Ease of Use
-Intermediate
-Version tested with
-2000, 2002 
-Submitted by:
-Glaswegian
-Description:
-Add custom menu items to the Menu Bar. You can then assign specific macros to run from these items 
-Discussion:
-It can be useful to add custom menu items to a variety of workbooks. These items can be added to a specific workbook, to an add-in or to your Personal.xls. This allows you to run specific macros direct from the Menu Bar - something that is easy even for inexperienced users. By adding the code to your Personal.xls you can assign your favourite or most commonly used macros - ready to run when you need them. This can also be useful when creating an add-in and allows you to create client specific menu items - which increases the professional look of your work. There are two pieces of code involved - the first creates the menu items on opening and the second deletes them on closing the workbook. 
-Code:
-instructions for use
-			
 Private Sub Workbook_Open() 
     Dim cmbBar As CommandBar 
     Dim cmbControl As CommandBarControl 
