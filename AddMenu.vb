@@ -1,3 +1,6 @@
+'Face ID Icon List
+'https://bettersolutions.com/vba/ribbon/face-ids-2003.htm
+
 Private Sub Workbook_Open() 
     Dim cmbBar As CommandBar 
     Dim cmbControl As CommandBarControl 
