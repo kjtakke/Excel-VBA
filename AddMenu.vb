@@ -1,6 +1,9 @@
 'Face ID Icon List
 'https://bettersolutions.com/vba/ribbon/face-ids-2003.htm
 
+'Workbook_AddinInstall event instead of the Workbook_Open event
+
+
 Private Sub Workbook_Open() 
     Dim cmbBar As CommandBar 
     Dim cmbControl As CommandBarControl 
