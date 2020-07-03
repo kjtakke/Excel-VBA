@@ -1,9 +1,9 @@
 'DATA
-'    A    B   C
-'1  Name	Qty	Age
-'2  Kris	15	10
-'3  Tim	  30	15
-'4  Jane	9	  80
+'    A     B     C
+'1  Name   Qty  Age
+'2  Kris   15   10
+'3  Tim    30   15
+'4  Jane   9    80
 
 'INPUT
 '=JS_JSONcreator("Sheet1","A2","C2","myData","A1")
