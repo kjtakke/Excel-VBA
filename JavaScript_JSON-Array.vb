@@ -36,7 +36,7 @@ Function JS_JSONcreator(worksheet As String, topLeftCell As String, topRightCell
     data = ws.Range(topLeftCell & ":" & topRightCell, ws.Range(topLeftCell & ":" & topRightCell).End(xlDown)).Value
     headings = ws.Range(headerTopLeftCell, ws.Range(headerTopLeftCell).End(xlToRight)).Value
 
-    JS_JSONcreator = "const VariableName = [" & vbNewLine
+    JS_JSONcreator = "const " & VariableName & " = [" & vbNewLine
     For i = 1 To UBound(data)
         JS_JSONcreator = JS_JSONcreator & "       " & "{" & vbNewLine
         For j = 1 To DimentionCounter(headings)
