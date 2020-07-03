@@ -31,16 +31,23 @@
 Function JS_JSONcreator(worksheet As String, topLeftCell As String, topRightCell As String, VariableName As String, headerTopLeftCell As String) As String
     Dim data, headings As Variant
     Dim ws As worksheet
+    Dim headingNospace As String
+    
     
     Set ws = Worksheets(worksheet)
     data = ws.Range(topLeftCell & ":" & topRightCell, ws.Range(topLeftCell & ":" & topRightCell).End(xlDown)).Value
     headings = ws.Range(headerTopLeftCell, ws.Range(headerTopLeftCell).End(xlToRight)).Value
 
-    JS_JSONcreator = "const " & VariableName & " = [" & vbNewLine
+    JS_JSONcreator = "const " & Replace(VariableName, " ", "_", , , vbTextCompare) & " = [" & vbNewLine
     For i = 1 To UBound(data)
         JS_JSONcreator = JS_JSONcreator & "       " & "{" & vbNewLine
         For j = 1 To DimentionCounter(headings)
-            JS_JSONcreator = JS_JSONcreator & "             " & headings(1, j) & " : '" & data(i, j) & "'," & vbNewLine
+             headingNospace = Replace(headings(1, j), " ", "_", , , vbTextCompare)
+            If IsNumeric(data(i, j)) = True Then
+                JS_JSONcreator = JS_JSONcreator & "             " & headingNospace & " : " & data(i, j) & "," & vbNewLine
+            Else
+                JS_JSONcreator = JS_JSONcreator & "             " & headingNospace & " : '" & data(i, j) & "'," & vbNewLine
+            End If
         Next j
         JS_JSONcreator = JS_JSONcreator & "       " & "}," & vbNewLine
     Next i
