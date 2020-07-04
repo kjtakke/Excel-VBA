@@ -102,7 +102,6 @@ Function DimentionCounter(index As Variant) As Integer
             TempVar = index(1, L)
         Next L
 LC:
-        L = L - 1
         On Error GoTo 0
-        DimentionCounter = L
+DimentionCounter = L -1
 End Function
