@@ -32,8 +32,7 @@ Function JS_JSONcreator(worksheet As String, topLeftCell As String, topRightCell
     Dim data, headings As Variant
     Dim ws As worksheet
     Dim headingNospace As String
-    
-    
+
     Set ws = Worksheets(worksheet)
     data = ws.Range(topLeftCell & ":" & topRightCell, ws.Range(topLeftCell & ":" & topRightCell).End(xlDown)).Value
     headings = ws.Range(headerTopLeftCell, ws.Range(headerTopLeftCell).End(xlToRight)).Value
