@@ -48,9 +48,7 @@ Sub Writefile(myTxt As String, fileName As String, fileExt As String)
     'myTxt              is the string of text to be written
     'fileName           is the name of the file to be written
     'fileExt            is the extent with "." of the file to be written
-    
-    Dim myTxt, fileName, fileExt, add As String
-    
+        
     Set fs = CreateObject("Scripting.FileSystemObject")
     Set a = fs.CreateTextFile("C:\Users\" & Environ("userName") & "\Desktop\" & fileName & fileExt, True)
     a.WriteLine myTxt
