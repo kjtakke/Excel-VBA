@@ -1,3 +1,5 @@
+'INSTRUCTIONS AND EXAMPLE#################################################################################
+
 'DATA
 '    A     B     C
 '1  Name   Qty  Age
@@ -5,11 +7,11 @@
 '3  Tim    30   15
 '4  Jane   9    80
 
-'INPUT
+'CELL INPUT
 '=JS_JSONcreator("Sheet1","A2","C2","myData","A1")
 
 'OUTPUT
-'const VariableName = [
+'const variableName = [
 '       {
 '             Name: 'Kris',
 '             Qty: '15',
@@ -28,7 +30,43 @@
 '];
 
 
+
+
+'SUBROUTINES AND FCTIONS##################################################################################
+
+'MAIN SUBROUTINE
+Sub WriteJS_JSON()
+    'This Sub sends the JavaScript Array/JSON as a string to be written
+    
+    Call Writefile(JS_JSONcreator("Sheet1", "A3", "Z3", "variableName", "A2"), "My_JS_Array_JSON", ".js")
+End Sub
+
+
+'WRITE TO FILE
+Sub Writefile(myTxt As String, fileName As String, fileExt As String)
+    'This Sub write a file to your Desktop
+    'myTxt              is the string of text to be written
+    'fileName           is the name of the file to be written
+    'fileExt            is the extent with "." of the file to be written
+    
+    Dim myTxt, fileName, fileExt, add As String
+    
+    Set fs = CreateObject("Scripting.FileSystemObject")
+    Set a = fs.CreateTextFile("C:\Users\" & Environ("userName") & "\Desktop\" & fileName & fileExt, True)
+    a.WriteLine myTxt
+    a.Close
+End Sub
+    
+        
+'CREATE JAVASCRIPT ARRAY/JSON       
 Function JS_JSONcreator(worksheet As String, topLeftCell As String, topRightCell As String, VariableName As String, headerTopLeftCell As String) As String
+    'This Function creates a string of text in JavaScript Array (JSON) Format
+    'worksheet          is the Excel worksheet that the data is in
+    'topLeftCell        is the top left cell address less the sheet name below the table header
+    'topRightCell       is the top right cell address less the sheet name below the table header
+    'VariableName       is JavaScript Variable Name
+    'headerTopLeftCell  is the far left header cell address less the sheet name
+    
     Dim data, headings As Variant
     Dim ws As worksheet
     Dim headingNospace As String
@@ -53,6 +91,8 @@ Function JS_JSONcreator(worksheet As String, topLeftCell As String, topRightCell
     JS_JSONcreator = JS_JSONcreator & "];" & vbNewLine
 End Function
 
+
+'COUNT ARRAY DIMENTIONS
 Function DimentionCounter(index As Variant) As Integer
     'This Function Counts the Columns/Dimentions in an Array
     'index is the input array
