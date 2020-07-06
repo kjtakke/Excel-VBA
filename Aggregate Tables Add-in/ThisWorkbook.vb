@@ -1,3 +1,7 @@
+Private Sub Workbook_Open()
+    Call worksheetAdd
+End Sub
+
 Private Sub Workbook_SheetChange(ByVal Sh As Object, ByVal target As Range)
     If target.Worksheet.Name <> "${agg}" Then
         On Error GoTo en:
