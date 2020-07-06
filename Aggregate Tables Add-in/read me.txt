@@ -1,0 +1,40 @@
+-To use this addin copy the code form:
+  -ThisWorkbook.vb and save it to the "ThisWorkbook"
+  -ggregate.vb and save it to a new module and call it "aggregate"
+-Then save the Excel Workbook as an Excel Add-in
+-Add the add-in
+
+On the sheet named "${agg}" use teh below formula (without "=")
+
+${agg: Input Table, Output Table, Target Location, Aggregation Type, Aggregation Type,....}
+Example:  Example:  ${agg:Table1, Table1_1, Sheet2!A1, sum, average, count}
+To include a column in the aggregated result ensure you have inputted teh correct ammount of "Aggregation Types"
+ 
+                                            1    2     3
+ Input  ${agg:Table1, Table1_1, Sheet2!A1, sum, sum, count}
+       A       B       C       D      E
+  1   Name    Age    Weight  Height Gender
+  2   John     36      84      192   Male
+  3   Kris     15      64      180   Female
+  4   John     26      87      160   Male
+ 
+
+ Output:
+        A       B       C       D 
+  1   Name    Age    Weight  Height
+  2   John     72      171     2
+  3   Kris     15      64      1
+          
+                                             1    2     3     4
+  Input  ${agg:Table1, Table1_1, Sheet2!A1, sum, sum, count, count}
+       A       B       C       D      E
+  1   Name    Age    Weight  Height Gender
+  2   John     36      84      192   Male
+  3   Kris     15      64      180   Female
+  4   John     26      87      160   Male
+
+ Output:
+       A       B       C       D      E
+  1   Name    Age    Weight  Height Gender
+  2   John     72      172     1      1
+  3   Kris     15      64      1      1
