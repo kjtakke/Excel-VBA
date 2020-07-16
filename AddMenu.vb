@@ -1,3 +1,12 @@
+Set MenuItem = NewMenu.Controls.Add _
+  (Type:=msoControlButton)
+With MenuItem
+    .Caption = "Save XML Data"
+    .FaceId = 270
+    .OnAction = "AskExportXml"
+    .Enabled = True
+End With
+
 'Face ID Icon List
 'https://bettersolutions.com/vba/ribbon/face-ids-2003.htm
 
