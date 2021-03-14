@@ -1,18 +1,9 @@
-<NL>'This only works on data without return gaps!
-<NL>'To rectify this, simpley replace in line 55:
-<NL>    'Data = Worksheets("MyTmpWS").Range("A1", Worksheets("MyTmpWS").Range("A1").End(xlDown)).Value
-<NL>'With:
-    'Data = Worksheets("MyTmpWS").Range("A1:A10000").Value
-'This will drasticlly slow down the Sub, however, you can adjust the length ("A1:A10000") to a smaller or large range ("A1:A100")
-
-'Test/Example Sub
-Sub TestDataFromWebToText()
-    Call dataFromWebToText("https://vincentarelbundock.github.io/Rdatasets/csv/carData/Arrests.csv", "My File", ".csv")
-End Sub
-
-
-
-Sub dataFromWebToText(ByVal URL As String, fileName As String, fileExt As String)
+Sub TestDataFromWebToText(){%;%}
+    Call dataFromWebToText("https://vincentarelbundock.github.io/Rdatasets/csv/carData/Arrests.csv", "My File", ".csv"){%;%}
+End Sub{%;%}
+{%;%}
+{%;%}
+Sub dataFromWebToText(ByVal URL As String, fileName As String, fileExt As String){%;%}
     On Error Resume Next
     Dim str As String
     Dim ary As Variant
