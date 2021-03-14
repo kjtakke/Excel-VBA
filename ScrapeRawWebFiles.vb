@@ -4,15 +4,15 @@ End Sub{%;%}
 {%;%}
 {%;%}
 Sub dataFromWebToText(ByVal URL As String, fileName As String, fileExt As String){%;%}
-    On Error Resume Next
-    Dim str As String
-    Dim ary As Variant
-    ary = getDataFromWeb(URL)
-    str = arrayToText(ary)
-    Call writeToTextFile(fileName, fileExt, str)
-End Sub
-
-Function getDataFromWeb(URL) As Variant
+    On Error Resume Next{%;%}
+    Dim str As String{%;%}
+    Dim ary As Variant{%;%}
+    ary = getDataFromWeb(URL){%;%}
+    str = arrayToText(ary){%;%}
+    Call writeToTextFile(fileName, fileExt, str){%;%}
+End Sub{%;%}
+{%;%}
+Function getDataFromWeb(URL) As Variant{%;%}
     On Error Resume Next
     Application.DisplayAlerts = False
     Application.ScreenUpdating = False
