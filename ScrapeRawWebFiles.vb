@@ -1,7 +1,7 @@
-'This only works on data without return gaps!
-'To rectify this, simpley replace in line 55:
-    'Data = Worksheets("MyTmpWS").Range("A1", Worksheets("MyTmpWS").Range("A1").End(xlDown)).Value
-'With:
+<NL>'This only works on data without return gaps!
+<NL>'To rectify this, simpley replace in line 55:
+<NL>    'Data = Worksheets("MyTmpWS").Range("A1", Worksheets("MyTmpWS").Range("A1").End(xlDown)).Value
+<NL>'With:
     'Data = Worksheets("MyTmpWS").Range("A1:A10000").Value
 'This will drasticlly slow down the Sub, however, you can adjust the length ("A1:A10000") to a smaller or large range ("A1:A100")
 
