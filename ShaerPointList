@@ -1,0 +1,51 @@
+Sub add_task()
+Dim cnt As ADODB.Connection
+Dim rst As ADODB.Recordset
+
+Dim mySql As String
+On Error GoTo en:
+
+If Worksheets("Sheet2").Range("A2").Value = "" Or _
+Worksheets("Sheet2").Range("B2").Value = "" Or _
+Worksheets("Sheet2").Range("C2").Value = "" Or _
+Worksheets("Sheet2").Range("D2").Value = "" Or _
+Worksheets("Sheet2").Range("E2").Value = "" Or _
+Worksheets("Sheet2").Range("F2").Value = "" _
+Then GoTo en:
+
+Set cnt = New ADODB.Connection
+Set rst = New ADODB.Recordset
+
+mySql = "SELECT * FROM [........]"
+
+With cnt
+    .ConnectionString = _
+    "Provider=Microsoft.ACE.OLEDB.12.0;WSS;IMEX=0;RetrieveIds=Yes;DATABASE=http://......;LIST={7831A117-A687-4A6C-9945-7BD872C69BDC};"
+    .Open
+End With
+
+rst.Open mySql, cnt, adOpenDynamic, adLockOptimistic
+
+rst.AddNew
+    rst.Fields("Task name") = Worksheets("Sheet2").Range("A2").Value
+    rst.Fields("Range") = Worksheets("Sheet2").Range("B2").Value
+    rst.Fields("Status") = Worksheets("Sheet2").Range("C2").Value
+    rst.Fields("Old Task Number") = Worksheets("Sheet2").Range("D2").Value
+    rst.Fields("Date Completed") = Worksheets("Sheet2").Range("E2").Value
+    rst.Fields("Remarks") = Worksheets("Sheet2").Range("F2").Value
+rst.Update
+
+If CBool(rst.State And adStateOpen) = True Then rst.Close
+Set rst = Nothing
+If CBool(cnt.State And adStateOpen) = True Then cnt.Close
+Set cnt = Nothing
+
+Worksheets("Sheet2").Range("A2").Value = ""
+Worksheets("Sheet2").Range("B2").Value = ""
+Worksheets("Sheet2").Range("C2").Value = "8. Cancelled"
+Worksheets("Sheet2").Range("D2").Value = ""
+Worksheets("Sheet2").Range("D2").Value = ""
+Worksheets("Sheet2").Range("F2").Value = ""
+
+en:
+End Sub
