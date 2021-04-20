@@ -1,195 +1,164 @@
-Option Explicit
+Public SP_Headers As Variant
+Public SharePointLists As Collection
+Public AllSharePointListData As Variant
+Public ListItemCount As Integer
+Public urls As Variant
+Public ListIDs As Variant
+Public listNames As Variant
 
-Sub SQL_Editor()
-
-SP_SQL.Show
-
+Private Sub Class_Initialize()
+    ListItemCount = 0
+    ReDim urls(0 To ListItemCount)
+    ReDim ListIDs(0 To ListItemCount)
+    ReDim listNames(0 To ListItemCount)
+    
 End Sub
 
-Sub Clr()
-Worksheets("SharePoint_Data").Range("B2:ZZ99999").Value = ""
+Public Property Let addSharePointList(url As String, listID As String, listName As String)
+
+ReDim Preserve urls(0 To ListItemCount)
+ReDim Preserve ListIDs(0 To ListItemCount)
+ReDim Preserve listNames(0 To ListItemCount)
+urls(ListItemCount) = url
+ListIDs(ListItemCount) = listID
+listNames(ListItemCount) = listName
+
+ListItemCount = ListItemCount + 1
+End Property
+
+Sub appendArrays()
+    Dim ary As Variant
+    Dim k As Integer
+    Dim i As Integer
+    Dim j As Integer
+    Dim h As Integer
+    Dim c As Integer
+    k = 0
+    j = 1
+    c = 1
+    
+    For Each ary In SharePointLists
+        k = k + UBound(ary) + 1
+    Next ary
+    
+    ReDim AllSharePointListData(0 To k, 0 To UBound(SP_Headers))
+    'Add Headers
+    For i = 0 To UBound(SP_Headers)
+        AllSharePointListData(0, i) = SP_Headers(i)
+    Next i
+    k = 1
+    
+    'Append Data
+    For Each ary In SharePointLists
+       
+        For i = 0 To UBound(ary)
+            For h = 0 To UBound(SP_Headers)
+            
+                If IsNull(ary(i, h)) Then ary(i, h) = ""
+                AllSharePointListData(j, h) = ary(i, h)
+            Next h
+        j = j + 1
+        Next i
+        c = c + 1
+    Next ary
+    
 End Sub
-Sub Svd()
-Worksheets("Saved_Queries").Activate
-End Sub
-Sub Bk()
-Worksheets("SharePoint_Data").Activate
-End Sub
-Sub Pk()
-OpenSharePointItem.Show
+
+Sub SharePointListsToCollection()
+    Call getSharpointListHeader
+    Call GetSharePointListData
+    Call appendArrays
 End Sub
 
-
-
-Sub SP_List()
-Worksheets("Temp_Data").Range("B2:ZZ99999").Value = ""
-Dim cnt As ADODB.Connection
-Dim rst As ADODB.Recordset
-Dim MySQL As String
-Dim SITE As String
-Dim LISTID As String
-Dim SQL_SELECT As String
-Dim SQL_FROM As String
-Dim SQL_WHERE As String
-Dim SQL_GROUPBY As String
-
-On Error GoTo En:
-SQL_SELECT = Worksheets("BaseData").Range("B3").Value
-SQL_FROM = Worksheets("BaseData").Range("B4").Value
-SQL_WHERE = Worksheets("BaseData").Range("B5").Value
-SQL_GROUPBY = Worksheets("BaseData").Range("B6").Value
-
-SITE = Worksheets("BaseData").Range("B1").Value
-LISTID = Worksheets("BaseData").Range("B2").Value
-
-Set cnt = New ADODB.Connection
-Set rst = New ADODB.Recordset
-
-
-'SQL Query
-If SQL_WHERE = "" Then
-    MySQL = "SELECT " & SQL_SELECT & " FROM " & SQL_FROM
-Else
-    MySQL = "SELECT " & SQL_SELECT & " FROM " & SQL_FROM & " WHERE " & SQL_WHERE
-End If
-
-If SQL_GROUPBY = "" Then
-    MySQL = MySQL & ";"
-Else
-    MySQL = MySQL & " GROUP BY " & SQL_GROUPBY & ";"
-End If
-
-'MySQL = "SELECT [Request Military Assistance - New].Priority FROM [Request Military Assistance - New] GROUP BY [Request Military Assistance - New].Priority;"
-'Debug.Print (MySQL)
-
-'SharePoint Site and List
-With cnt
-    .ConnectionString = _
-    "Provider=Microsoft.ACE.OLEDB.12.0;WSS;IMEX=0;RetrieveIds=Yes;DATABASE=" & SITE & ";LIST={" & LISTID & "};"
-    .Open
-End With
-
-'Open session
-rst.Open MySQL, cnt, adOpenForwardOnly, adLockReadOnly
-
-
-    'List data location
-    Dim arry As Variant
-    If Not (rst.BOF And rst.EOF) Then
-        Worksheets("Temp_Data").Range("B2").CopyFromRecordset rst
-        arry = rst.GetRows
-    End If
+Sub GetSharePointListData()
+    Dim cnt As ADODB.Connection
+    Dim rst As ADODB.Recordset
+    Dim ListArray As Variant
+    Dim SP_List As Variant
+    Dim mySql As String
+    Dim i As Integer
+    Dim j As Integer
+    Set SharePointLists = New Collection
+    'On Error GoTo en:
     
     
     
-    'Send SharePoint data to an Array
-    ReDim SP_List(0 To UBound(arry, 2), 0 To UBound(arry)) As Variant
-    Dim Counter As Long, Internalcounter As Long
-    'Unpivot Array
-    For Counter = 0 To UBound(arry)
-        For Internalcounter = 0 To UBound(arry, 2)
-            SP_List(Internalcounter, Counter) = arry(Counter, Internalcounter)
-        Next Internalcounter
-    Next Counter
+    For j = 0 To UBound(urls)
+        Set cnt = New ADODB.Connection
+        Set rst = New ADODB.Recordset
+        mySql = "SELECT * FROM [" & listNames(j) & "]"
+    
+        With cnt
+            .ConnectionString = _
+            "Provider=Microsoft.ACE.OLEDB.12.0;WSS;IMEX=0;RetrieveIds=Yes;DATABASE=" & urls(j) & ";LIST={" & ListIDs(j) & "};"
+            .Open
+        End With
+    
+        rst.Open mySql, cnt, adOpenDynamic, adLockOptimistic
+        
+        'Get Field Headers
+        ReDim SP_Headers(0 To rst.Fields.Count - 1)
+        
+        For i = 0 To rst.Fields.Count - 1
+            SP_Headers(i) = rst.Fields(i).Name
+        Next i
+    
+        ListArray = rst.GetRows
+    
+        'Send SharePoint data to an Array
+        ReDim SP_List(0 To UBound(ListArray, 2), 0 To UBound(ListArray)) As Variant
+        Dim Counter As Long, Internalcounter As Long
+        'Unpivot Array
+        For Counter = 0 To UBound(ListArray)
+            For Internalcounter = 0 To UBound(ListArray, 2)
+                SP_List(Internalcounter, Counter) = ListArray(Counter, Internalcounter)
+            Next Internalcounter
+        Next Counter
+        
+        SharePointLists.Add SP_List
+        
+        If CBool(rst.State And adStateOpen) = True Then rst.Close
+        Set rst = Nothing
+        If CBool(cnt.State And adStateOpen) = True Then cnt.Close
+        Set cnt = Nothing
 
-
-
-'End session
-If CBool(rst.State And adStateOpen) = True Then rst.Close
-Set rst = Nothing
-If CBool(cnt.State And adStateOpen) = True Then cnt.Close
-Set cnt = Nothing
-En:
+    Next j
+en:
 End Sub
 
 
-
-
-Sub SP_List2()
-Worksheets("SharePoint_Data").Range("B2:ZZ99999").Value = ""
-Dim cnt As ADODB.Connection
-Dim rst As ADODB.Recordset
-Dim MySQL As String
-Dim SITE As String
-Dim LISTID As String
-Dim SQL_SELECT As String
-Dim SQL_FROM As String
-Dim SQL_WHERE As String
-Dim SQL_GROUPBY As String
-
-On Error GoTo En:
-SQL_SELECT = Worksheets("BaseData").Range("B3").Value
-SQL_FROM = Worksheets("BaseData").Range("B4").Value
-SQL_WHERE = Worksheets("BaseData").Range("B5").Value
-SQL_GROUPBY = Worksheets("BaseData").Range("B6").Value
-
-SITE = Worksheets("BaseData").Range("B1").Value
-LISTID = Worksheets("BaseData").Range("B2").Value
-
-Set cnt = New ADODB.Connection
-Set rst = New ADODB.Recordset
-
-
-'SQL Query
-If SQL_WHERE = "" Then
-    MySQL = "SELECT " & SQL_SELECT & " FROM " & SQL_FROM
-Else
-    MySQL = "SELECT " & SQL_SELECT & " FROM " & SQL_FROM & " WHERE " & SQL_WHERE
-End If
-
-If SQL_GROUPBY = "" Then
-    MySQL = MySQL & ";"
-Else
-    MySQL = MySQL & " GROUP BY " & SQL_GROUPBY & ";"
-End If
-
-'MySQL = "SELECT [Request Military Assistance - New].Priority FROM [Request Military Assistance - New] GROUP BY [Request Military Assistance - New].Priority;"
-'Debug.Print (MySQL)
-
-'SharePoint Site and List
-With cnt
-    .ConnectionString = _
-    "Provider=Microsoft.ACE.OLEDB.12.0;WSS;IMEX=0;RetrieveIds=Yes;DATABASE=" & SITE & ";LIST={" & LISTID & "};"
-    .Open
-End With
-
-'Open session
-rst.Open MySQL, cnt, adOpenForwardOnly, adLockReadOnly
-
-
-    'List data location
-    Dim arry As Variant
-    If Not (rst.BOF And rst.EOF) Then
-        Worksheets("SharePoint_Data").Range("B2").CopyFromRecordset rst
-        arry = rst.GetRows
-    End If
+Sub getSharpointListHeader()
+    Dim cnt As ADODB.Connection
+    Dim rst As ADODB.Recordset
+    Dim mySql As String
+    Dim i As Integer
+    On Error GoTo en:
     
     
+    Set cnt = New ADODB.Connection
+    Set rst = New ADODB.Recordset
+
+    mySql = "SELECT * FROM [" & listNames(0) & "]"
+
+    With cnt
+        .ConnectionString = _
+        "Provider=Microsoft.ACE.OLEDB.12.0;WSS;IMEX=0;RetrieveIds=Yes;DATABASE=" & urls(0) & ";LIST={" & ListIDs(0) & "};"
+        .Open
+    End With
+
+    rst.Open mySql, cnt, adOpenDynamic, adLockOptimistic
     
-    'Send SharePoint data to an Array
-    ReDim SP_List(0 To UBound(arry, 2), 0 To UBound(arry)) As Variant
-    Dim Counter As Long, Internalcounter As Long
-    'Unpivot Array
-    For Counter = 0 To UBound(arry)
-        For Internalcounter = 0 To UBound(arry, 2)
-            SP_List(Internalcounter, Counter) = arry(Counter, Internalcounter)
-        Next Internalcounter
-    Next Counter
+    'Get Field Headers
+    ReDim SP_Headers(0 To rst.Fields.Count - 1)
+    
+    For i = 0 To rst.Fields.Count - 1
+        SP_Headers(i) = rst.Fields(i).Name
+    Next i
 
+    If CBool(rst.State And adStateOpen) = True Then rst.Close
+    Set rst = Nothing
+    If CBool(cnt.State And adStateOpen) = True Then cnt.Close
+    Set cnt = Nothing
 
-
-'End session
-If CBool(rst.State And adStateOpen) = True Then rst.Close
-Set rst = Nothing
-If CBool(cnt.State And adStateOpen) = True Then cnt.Close
-Set cnt = Nothing
-
-With Worksheets("SharePoint_Data").Cells
-    .RowHeight = 15
-    .EntireColumn.AutoFit
-End With
-    Worksheets("SharePoint_Data").Rows("1:1").RowHeight = 43 = 43.5
-
-En:
+en:
 End Sub
-
