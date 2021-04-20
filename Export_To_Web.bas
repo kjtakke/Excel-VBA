@@ -1,7 +1,7 @@
 
 
 'EXPORT CLASS
-'This class is designed to create web dashboards in Microsoft Access
+'This class is designed to create web dashboards in Microsoft Excel
 '
 'REQUIRED PACKAGES AND LIBRARIES
 '   Visual Basic For Applications
