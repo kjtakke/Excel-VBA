@@ -1,3 +1,6 @@
+'Group      Name        Start_Date      Due_Date    Comments
+'String     String      Date            Date        String
+
 Private uniqueList As Variant
 Private Working As Variant
 Private ArrayDims As Integer
